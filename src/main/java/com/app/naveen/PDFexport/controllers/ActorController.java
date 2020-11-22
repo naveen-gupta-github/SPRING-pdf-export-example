@@ -22,21 +22,23 @@ public class ActorController {
 	ActorService actorService;
 	
 	
-	@GetMapping(value="actors/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+	@GetMapping(value="actors/pdf") //, produces = MediaType.APPLICATION_PDF_VALUE
 	public ResponseEntity<InputStreamResource> getAllActors() {
 		
 		List<Actor> actors =  actorService.findAllActorsInfo();
 		
 		ByteArrayInputStream bis = GeneratePDF.getPDF(actors);
 		
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Disposition", "inline; filename=actors.pdf");
+		//HttpHeaders headers = new HttpHeaders();
+		//headers.add("Content-Disposition", "inline; filename=actors.pdf");
 		
 		return ResponseEntity
                 .ok()
-                .headers(headers)
+             //   .headers(headers)
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
+		
+		
 	}
 }
 

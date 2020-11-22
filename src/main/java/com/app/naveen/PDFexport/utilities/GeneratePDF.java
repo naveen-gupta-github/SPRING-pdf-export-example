@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import com.app.naveen.PDFexport.models.Actor;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 public class GeneratePDF {
 
 	private static final Logger logger = LoggerFactory.getLogger(GeneratePDF.class);
+	
 	public static ByteArrayInputStream getPDF(List<Actor> actors) {
 
         Document document = new Document();
@@ -28,22 +30,29 @@ public class GeneratePDF {
         try {
 
             PdfPTable table = new PdfPTable(3);
-            table.setWidthPercentage(60);
-            table.setWidths(new int[]{1, 3, 3});
+            table.setWidthPercentage(90);
+            table.setWidths(new int[]{1, 2, 2});
 
             Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-
+            BaseColor backgroundColor  =  BaseColor.LIGHT_GRAY;
+            
             PdfPCell hcell;
             hcell = new PdfPCell(new Phrase("Id", headFont));
             hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            hcell.setPadding(10);
+            hcell.setBackgroundColor(backgroundColor);
             table.addCell(hcell);
 
             hcell = new PdfPCell(new Phrase("First Name", headFont));
             hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            hcell.setPadding(10);
+            hcell.setBackgroundColor(backgroundColor);
             table.addCell(hcell);
 
             hcell = new PdfPCell(new Phrase("Last Name", headFont));
             hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            hcell.setPadding(10);
+            hcell.setBackgroundColor(backgroundColor);
             table.addCell(hcell);
 
             for (Actor actor : actors) {
@@ -53,25 +62,25 @@ public class GeneratePDF {
                 cell = new PdfPCell(new Phrase(actor.getId().toString()));
                 cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                
                 table.addCell(cell);
 
                 cell = new PdfPCell(new Phrase(actor.getFirstName()));
-                cell.setPaddingLeft(5);
+                cell.setPadding(5);
                 cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
 
                 cell = new PdfPCell(new Phrase(actor.getLastName()));
-                cell.setPaddingLeft(5);
+                cell.setPadding(5);
                 cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
             }
 
             PdfWriter.getInstance(document, out);
             document.open();
             document.add(table);
-
             document.close();
 
         } catch (DocumentException ex) {
